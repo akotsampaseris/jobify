@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+{% for job in jobs %}
+<div class="job-posting card" style="border: 1px solid #222; width: 80%; margin: 0 auto;">
+  <div class="card-body">
+    <div class="title card-title">
+      <a href="https://indeed.com/{{job.url}}" target="_blank"><h5>{{job.title}}</h5></a>
+    </div>
+    <div class="job-info">
+        <span class="company">{{job.company}}</span>
+        <span>|</span>
+        <span>{{job.location}}</span>
+        <br>
+        <span>{{job.salary}}</span>
+        {% if job.salary and job.remote %}
+        <span>|</span>
+        {% endif %}
+        <span>{{job.remote}}</span>
+        <br>
+        <br>
+        <p class="card-text">{{job.summary}}</p>
+        <div class="job-meta">
+          <small>Found: {{job.created_at}}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+{% endfor %}
+
+
+{% if jobs.has_other_pages %}
+<div class="pagination" style="width: 50%; margin: 0 auto;">
+  <ul class="pagination" style="width: 50%; margin: 0 auto;">
+    {% if jobs.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{ jobs.previous_page_number }}">Previous</a></li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link"></span></li>
+    {% endif %}
+    {% for i in jobs.paginator.page_range %}
+    {% if jobs.number == i %}
+    <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% else %}
+    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if jobs.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ jobs.next_page_number }}">Next</a></li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link"></span></li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}
+{% endblock %}
