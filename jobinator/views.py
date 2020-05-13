@@ -3,7 +3,16 @@ from .forms import JobinatorForm
 from .models import Jobinator
 
 # Create your views here.
-def index(request):
+def my_jobs(request):
+    jobs = Jobinator.objects.all()
+
+    context = {
+        'jobs': jobs
+    }
+    return render(request, 'jobinator/my_jobs.html', context)
+
+
+def create(request):
     if request.method == 'POST':
         form = JobinatorForm(request.POST)
         if form.is_valid():
@@ -13,19 +22,26 @@ def index(request):
                 position=position,
                 location=location
             )
-            return HttpResponseRedirect('/jobinator/results')
+            return HttpResponseRedirect('/jobinator/my-jobs')
     else:
         form = JobinatorForm()
 
     context = {
         'form': form
     }
-    return render(request, 'jobinator/index.html', context)
+    return render(request, 'jobinator/create_job.html', context)
 
-def test(request):
-    jobs = Jobinator.objects.all()
 
-    context = {
-        'jobs': jobs
-    }
-    return render(request, 'jobinator/test.html', context)
+def activate(request, id):
+    job = Jobinator.objects.get(pk=id)
+    #job.active = True
+    job.save()
+
+    return HttpResponseRedirect('/jobinator/my-jobs')
+
+
+def delete(request, id):
+    job = Jobinator.objects.get(pk=id)
+    job.delete()
+
+    return HttpResponseRedirect('/jobinator/my-jobs')

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Your saved job searches</h1>
+<a href="{% url 'create_job' %}" class="btn btn-success">Create alert</a>
+{% for job in jobs %}
+<div class="card">
+  <span>Position: {{job.position}}</span>
+  <span>Location: {{job.location}}</span>
+  <span>Active: {{job.active}}</span>
+  <a href="{% url 'activate_job' job.id %}" class="btn btn-success">Activate</a>
+  <a href="{% url 'delete_job' job.id %}" class="btn btn-danger">Delete</a>
+</div>
+{% endfor %}
+{% endblock %}
