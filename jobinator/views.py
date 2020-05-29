@@ -33,15 +33,28 @@ def create(request):
 
 
 def activate(request, id):
-    job = Jobinator.objects.get(pk=id)
-    #job.active = True
-    job.save()
+    current_active = Jobinator.objects.filter(active=True)
+    for job in current_active:
+        job.active = False
+        job.save()
+
+    new_active = Jobinator.objects.get(pk=id)
+    new_active.active = True
+    new_active.save()
+
+    return HttpResponseRedirect('/jobinator/my-jobs')
+
+
+def deactivate(request, id):
+    current_active = Jobinator.objects.get(pk=id)
+    current_active.active = False
+    current_active.save()
 
     return HttpResponseRedirect('/jobinator/my-jobs')
 
 
 def delete(request, id):
-    job = Jobinator.objects.get(pk=id)
-    job.delete()
+    job_to_be_deleted = Jobinator.objects.get(pk=id)
+    job_to_be_deleted.delete()
 
     return HttpResponseRedirect('/jobinator/my-jobs')

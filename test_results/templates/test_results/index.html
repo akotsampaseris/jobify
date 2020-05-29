@@ -9,21 +9,20 @@
       <a href="https://indeed.com/{{job.url}}" target="_blank"><h5>{{job.title}}</h5></a>
     </div>
     <div class="job-info">
-        <span class="company">{{job.company}}</span>
-        <span>|</span>
-        <span>{{job.location}}</span>
-        <br>
-        <span>{{job.salary}}</span>
-        {% if job.salary and job.remote %}
-        <span>|</span>
-        {% endif %}
-        <span>{{job.remote}}</span>
-        <br>
-        <br>
-        <p class="card-text">{{job.summary}}</p>
-        <div class="job-meta">
-          <small>Found: {{job.created_at}}</small>
-        </div>
+      <span class="company">{{job.company}}</span>
+      <span>|</span>
+      <span>{{job.location}}</span>
+      <br>
+      <span>{{job.salary}}</span>
+      {% if job.salary and job.remote %}
+      <span>|</span>
+      {% endif %}
+      <span>{{job.remote}}</span>
+      <br>
+      <br>
+      <p class="card-text">{{job.summary}}</p>
+      <div class="job-meta">
+        <small>Found: {{job.created_at}}</small>
       </div>
     </div>
   </div>
@@ -33,7 +32,7 @@
 
 
 {% if jobs.has_other_pages %}
-<div class="pagination" style="width: 50%; margin: 0 auto;">
+<div class="pagination" style="width: 50%; margin: 0 auto; margin-bottom: 20px;">
   <ul class="pagination" style="width: 50%; margin: 0 auto;">
     {% if jobs.has_previous %}
     <li class="page-item"><a class="page-link" href="?page={{ jobs.previous_page_number }}">Previous</a></li>
@@ -55,4 +54,5 @@
   </ul>
 </div>
 {% endif %}
+
 {% endblock %}

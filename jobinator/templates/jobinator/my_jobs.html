@@ -1,15 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Your saved job searches</h1>
-<a href="{% url 'create_job' %}" class="btn btn-success">Create alert</a>
+<h1 class="d-inline">Your saved job alerts</h1>
+<a href="{% url 'jobinator:create_job' %}" class="btn btn-success d-inline">Create alert</a>
+<br>
+<br>
+{% if jobs %}
 {% for job in jobs %}
-<div class="card">
-  <span>Position: {{job.position}}</span>
-  <span>Location: {{job.location}}</span>
-  <span>Active: {{job.active}}</span>
-  <a href="{% url 'activate_job' job.id %}" class="btn btn-success">Activate</a>
-  <a href="{% url 'delete_job' job.id %}" class="btn btn-danger">Delete</a>
+<div class="card" style="width: 30%">
+  <span class="d-inline">Position: {{job.position}}</span>
+  <span class="d-inline">Location: {{job.location}}</span>
+  <span class="d-inline">Active: {{job.active}}</span>
+  {% if job.active == False %}
+  <a href="{% url 'jobinator:activate_job' job.id %}" class="btn btn-success d-inline"
+  style="width: 50%">Activate</a>
+  {% else %}
+  <a href="{% url 'jobinator:deactivate_job' job.id %}" class="btn btn-success d-inline"
+  style="width: 50%">Deactivate</a>
+  {% endif %}
+  <a href="{% url 'jobinator:delete_job' job.id %}" class="btn btn-danger d-inline"
+  style="width: 50%">Delete</a>
 </div>
 {% endfor %}
+{% else %}
+<p>You have no saved job alerts. <a href="{% url 'jobinator:create_job' %}">Create one!</a></p>
+{% endif %}
 {% endblock %}

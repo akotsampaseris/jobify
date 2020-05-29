@@ -4,7 +4,7 @@
 <h3>Jobinator</h3>
 <p>Register your interest in a position and receive notifications of new postings.</p>
 <br>
-<form class="form" action="{% url 'create_job' %}" method="post">
+<form class="form" action="{% url 'jobinator:create_job' %}" method="post">
   {% csrf_token %}
   {{ form }}
   <input type="submit" value="Submit" class="btn btn-success">

@@ -37,10 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'static',
+    'user',
     'jobinator',
     'webscraper',
     'test_results'
 ]
+
+LOGIN_URL = 'user:login'
+LOGIN_REDIRECT_URL = 'user:profile'
+LOGOUT_REDIRECT_URL = 'user:login'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

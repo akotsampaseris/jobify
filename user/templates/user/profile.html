@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{profile.id}}
+<form class="form" action="{% url 'user:profile' %}" method="post">
+  {% csrf_token %}
+  {{user_form.as_p}}
+  {{profile_form.as_p}}
+
+  <input type="submit" class="btn btn-primary" value="Update">
+</form>
+{% endblock %}

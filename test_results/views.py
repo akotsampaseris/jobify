@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 def index(request):
     job_list = Job.objects.all()
 
-    paginator = Paginator(job_list, 2)
+    paginator = Paginator(job_list, 4)
     page = request.GET.get('page', 1)
 
     jobs = paginator.page(page)

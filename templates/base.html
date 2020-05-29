@@ -10,6 +10,21 @@
   </head>
   <body>
     <div class="container">
+      <div class="navbar">
+        {% include 'inc/navbar.html' %}
+      </div>
+      {% block errors %}
+      {% endblock %}
+
+      {% if messages %}
+      <div class="alert alert-danger" role="alert">
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+      </div>
+      {% endif %}
       <div class="content">
         {% block content %}
         content

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Register</h1>
+<form class="form" action="{% url 'user:register' %}" method="post">
+  {% csrf_token %}
+  {{profile_form.as_p}}
+  {{user_form.as_p}}
+  <input type="submit" class="btn btn-success" value="Submit">
+</form>
+{% endblock %}
