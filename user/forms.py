@@ -29,12 +29,16 @@ class RegisterForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     username = forms.CharField(disabled=True)
     email = forms.EmailField(disabled=True)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
 
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
 
 class ProfileForm(forms.ModelForm):
+    nickname = forms.CharField(required=False)
+    
     class Meta:
         model = Profile
         fields = ['nickname']

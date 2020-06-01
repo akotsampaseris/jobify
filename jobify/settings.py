@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'user',
     'jobinator',
     'webscraper',
+    'alerts',
     'test_results'
 ]
 
