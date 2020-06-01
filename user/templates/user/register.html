@@ -4,8 +4,15 @@
 <h1>Register</h1>
 <form class="form" action="{% url 'user:register' %}" method="post">
   {% csrf_token %}
-  {{profile_form.as_p}}
-  {{user_form.as_p}}
-  <input type="submit" class="btn btn-success" value="Submit">
+  <table>
+    {% for item in register_form %}
+    <tr>
+      {{item.errors}}
+      <td>{{item.label}}</td>
+      <td>{{item}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <input type="submit" class="btn btn-primary" value="Register">
 </form>
 {% endblock %}

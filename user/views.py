@@ -7,41 +7,25 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
 from .models import Profile
-from .forms import UserForm, ProfileForm, LoginForm
-
-# Create your views here.
-def test(request):
-    username = 'test'
-    password = 'test1234!!'
-    #user = authenticate(username=username, password=password)
-    messages.error(request, 'Error wrong username/password')
-    user = User.objects.get(pk=1)
-    #login(request, user)
-
-    context = {
-        "user": user,
-        "password": password
-    }
-
-    return render(request, 'user/test.html', context)
+from .forms import UserForm, ProfileForm, LoginForm, RegisterForm
 
 @login_required
 def profile(request):
     user = request.user
     profile = request.user.profile
     if request.method == 'POST':
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user)
+        user_form = UserForm(request.POST, instance=user)
+        profile_form = ProfileForm(request.POST, instance=profile)
         if user_form.is_valid() and profile_form.is_valid():
-            user.first_name = user_form.cleaned_data['first_name']
             user.save()
-            profile.birtdhay = profile_form.cleaned_data['birthday']
             profile.save()
 
             return redirect('user:profile')
+        else:
+            print('Fuuuck!')
     else:
-        user_form = UserForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user)
+        user_form = UserForm(instance=user)
+        profile_form = ProfileForm(instance=profile)
 
     context = {
         "profile": profile,
@@ -54,26 +38,23 @@ def profile(request):
 
 def register(request):
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        if user_form.is_valid():
-            username = user_form.cleaned_data['username']
-            email = user_form.cleaned_data['email']
-            try:
-                validate_password(user_form.cleaned_data['password'])
-            except:
-                return redirect('user:register')
-            password = user_form.cleaned_data['password']
+        register_form = RegisterForm(request.POST)
+        if register_form.is_valid():
+            username = register_form.cleaned_data['username']
+            email = register_form.cleaned_data['email']
+            validate_password(register_form.cleaned_data['password'])
+            password = register_form.cleaned_data['password']
 
-            user = User(username=username, email=email)
-            user.set_password(password)
-            user.save()
+            new_user = User(username=username, email=email)
+            new_user.set_password(password)
+            new_user.save()
 
             return redirect('user:login')
     else:
-        user_form = UserForm()
+        register_form = RegisterForm()
 
     context = {
-        "user_form": user_form,
+        "register_form": register_form,
     }
 
     return render(request, 'user/register.html', context)

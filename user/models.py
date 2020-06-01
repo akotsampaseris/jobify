@@ -7,7 +7,7 @@ from django.dispatch import receiver
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    birthday = models.DateField(null=True)
+    nickname = models.CharField(max_length=100, null=True)
 
 
 @receiver(post_save, sender=User)

@@ -6,12 +6,35 @@ class LoginForm(forms.Form):
     username = forms.CharField(label='Username')
     password = forms.CharField(widget=forms.PasswordInput)
 
-class UserForm(forms.ModelForm):
+
+class RegisterForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    confirm_password = forms.CharField(widget=forms.PasswordInput())
+
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name')
+        fields = ['username', 'email', 'password']
+
+    def clean(self):
+        cleaned_data = super(RegisterForm, self).clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if password != confirm_password:
+            raise forms.ValidationError(
+                "password and confirm_password does not match"
+            )
+
+
+class UserForm(forms.ModelForm):
+    username = forms.CharField(disabled=True)
+    email = forms.EmailField(disabled=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['birthday']
+        fields = ['nickname']

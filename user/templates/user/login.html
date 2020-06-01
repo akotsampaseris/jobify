@@ -18,7 +18,6 @@
 <form class="form" action="{% url 'user:login' %}" method="post">
   {% csrf_token %}
   {{login_form.as_p}}
-  <input type="submit" class="btn btn-success" value="Login">
-  <a class="btn btn-danger" href="{% url 'user:register' %}">Register</a>
+  <input type="submit" class="btn btn-primary" value="Login">
 </form>
 {% endblock %}

@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 def index(request):
-    job_list = Job.objects.all()
+    job_list = Job.objects.all().order_by('-created_at')
 
     paginator = Paginator(job_list, 4)
     page = request.GET.get('page', 1)
