@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Email Alerts</h1>
+<table>
+  <tr>
+    <td>New User</td>
+    <td><a href="{% url 'alerts:new_user' %}" class="btn btn-primary">Send</a></td>
+  </tr>
+  <tr>
+    <td>Job Notifications</td>
+    <td><a href="{% url 'alerts:job_notification' %}" class="btn btn-primary">Send</a></td>
+  </tr>
+</table>
+{% endblock %}
