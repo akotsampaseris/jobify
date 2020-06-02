@@ -3,19 +3,17 @@ from .models import Job
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import json
-from webscraper.models import Job
+from webscraper.models import Job, Website
 from jobinator.models import Jobinator
 
 # Create your views here.
 def index(request):
-    def search_indeed(fn_position, fn_location):
-        url = 'https://indeed.com/'
-        query = 'jobs?q='
-        position_keywords = fn_position.replace(' ','-')
-        query += position_keywords
-        query += '&l='
-        location_query = fn_location.replace(' ','-')
-        query += location_query
+    def search_indeed(website, fn_position, fn_location):
+        url = website.url
+        query_prefix = website.query_prefix
+        position_query = website.position_query + fn_position.replace(' ','-')
+        location_query = website.location_query + fn_location.replace(' ','-')
+        query = query_prefix + position_query + location_query
         complete_url = url + query
 
         # open url
@@ -25,14 +23,19 @@ def index(request):
         soup = BeautifulSoup(html, 'html.parser')
 
         # grab all postings
-        postings = soup.find_all("div", class_="jobsearch-SerpJobCard")
+        postings = soup.find_all(website.postings_element,
+                                class_=website.postings_class_or_id)
 
-
+        print(postings)
         for p in postings:
-            url = p.find('a', class_='jobtitle')['href']
-            title = p.find('a', class_='jobtitle').text
-            company = p.find('span', class_='company').text
-            location = p.find('span', class_='location').text
+            url = p.find(website.posting_url_element,
+                        class_=website.posting_url_class_or_id)['href']
+            title = p.find(website.posting_title_element,
+                        class_=website.posting_title_class_or_id).text
+            company = p.find(website.posting_company_element,
+                        class_=website.posting_company_class_or_id).text
+            location = p.find(website.posting_location_element,
+                        class_=website.posting_location_class_or_id).text
             try:
                 salary = p.find('span', class_='salaryText').text
             except:
@@ -41,7 +44,10 @@ def index(request):
                 remote = p.find('span', class_='remote').text
             except:
                 remote = ""
-            summary = p.find('div', class_='summary').text
+            try:
+                summary = p.find('div', class_='summary').text
+            except:
+                summary = ""
             print(title)
             # check if url in db
             try:
@@ -60,10 +66,12 @@ def index(request):
 
     if request.method == 'POST':
         job_alerts = Jobinator.objects.filter(active=True)
+        websites = Website.objects.all()
         if len(job_alerts)<1:
             print("No job alerts!")
         else:
             for job_alert in job_alerts:
-                search_indeed(job_alert.position, job_alert.location)
+                for website in websites:
+                    search_indeed(website, job_alert.position, job_alert.location)
 
     return render(request, 'webscraper/index.html')

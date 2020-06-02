@@ -1,24 +1,17 @@
-from django.core.management.base import BaseCommand
-
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import json
 from webscraper.models import Job
+from jobinator.models import Jobinator
 
-class Command(BaseCommand):
-    help = "collect jobs"
-
-    # define logic of command
-
-    def handle(self, *args, **options):
-        # collect html
-
-        url = 'https://indeed.com/'
-        query = 'jobs?q='
-        position_keywords = 'python'
+def search_website(websites, fn_position, fn_location):
+    for website in websites:
+        url = 'https://indeed.com'
+        query = '/jobs?q='
+        position_keywords = fn_position.replace(' ','-')
         query += position_keywords
         query += '&l='
-        location_query = 'california'
+        location_query = fn_location.replace(' ','-')
         query += location_query
         complete_url = url + query
 
@@ -30,7 +23,6 @@ class Command(BaseCommand):
 
         # grab all postings
         postings = soup.find_all("div", class_="jobsearch-SerpJobCard")
-
 
         for p in postings:
             url = p.find('a', class_='jobtitle')['href']
@@ -46,10 +38,10 @@ class Command(BaseCommand):
             except:
                 remote = ""
             summary = p.find('div', class_='summary').text
-            print(summary)
 
             # check if url in db
             try:
+                # save in db
                 Job.objects.create(
                 url=url,
                 title=title,
@@ -59,7 +51,5 @@ class Command(BaseCommand):
                 remote=remote,
                 summary=summary
                 )
-                # save in db
-                print('%s added' % (title,))
             except:
-                print('error')
+                pass

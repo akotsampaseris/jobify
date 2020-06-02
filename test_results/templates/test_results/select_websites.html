@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table class="table">
+{% if websites %}
+{% for website in websites %}
+<tr>
+  <td><a href="{% url 'jobs:update_website' website.id %}">{{website.title}}</a></td>
+  <td><a href="{{ website.url }}">{{website.url}}</a></td>
+  <td><a href="{% url 'jobs:delete_website' website.id %}" class="btn btn-danger">Delete</a></td>
+</tr>
+{% endfor %}
+{% else %}
+<p>You have no websites. <a href="{% url 'jobs:create_website' %}">Create one!</a></p>
+{% endif %}
+</table>
+{% endblock %}

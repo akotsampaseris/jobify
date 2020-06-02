@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form class="form" action="{% url 'jobs:create_website' %}" method="post">
+  {% csrf_token %}
+  {{website_form.as_p}}
+  <input type="submit" class="btn btn-primary" value="Create">
+</form>
+{% endblock %}
