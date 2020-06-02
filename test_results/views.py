@@ -7,7 +7,7 @@ from .forms import WebsiteForm
 def index(request):
     job_list = Job.objects.all().order_by('-created_at')
 
-    paginator = Paginator(job_list, 4)
+    paginator = Paginator(job_list, 10)
     page = request.GET.get('page', 1)
 
     jobs = paginator.page(page)
@@ -17,6 +17,14 @@ def index(request):
     }
 
     return render(request, 'test_results/index.html', context)
+
+
+def delete_all(request):
+    jobs = Job.objects.all()
+    for job in jobs:
+        job.delete()
+
+    return redirect('jobs:index')
 
 
 def select_websites(request):
@@ -60,7 +68,7 @@ def create_website(request):
                 posting_title_element=posting_title_element,
                 posting_title_class_or_id=posting_title_class_or_id,
                 posting_company_element=posting_company_element,
-                posting_company_class_or_id=posting_company_element,
+                posting_company_class_or_id=posting_company_class_or_id,
                 posting_location_element=posting_location_element,
                 posting_location_class_or_id=posting_location_class_or_id
             )

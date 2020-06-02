@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
+<center><a href="{% url 'jobs:delete_all' %}" class="btn btn-danger">Delete All</a></center>
 <br>
 {% for job in jobs %}
 <div class="job-posting card" style="border: 1px solid #222; width: 80%; margin: 0 auto;">
   <div class="card-body">
     <div class="title card-title">
-      <a href="https://indeed.com{{job.url}}" target="_blank"><h5>{{job.title}}</h5></a>
+      <a href="{{job.url}}" target="_blank"><h5>{{job.title}}</h5></a>
     </div>
     <div class="job-info">
       <span class="company">{{job.company}}</span>
@@ -18,17 +19,16 @@
       <span>|</span>
       {% endif %}
       <span>{{job.remote}}</span>
-      <br>
-      <br>
-      <p class="card-text">{{job.summary}}</p>
+      <!--<p class="card-text">{{job.summary}}</p>-->
       <div class="job-meta">
-        <small>Found: {{job.created_at}}</small>
+        <small>Found at {{job.created_at}} on {{job.website_title}}</small>
       </div>
     </div>
   </div>
 </div>
 <hr>
 {% endfor %}
+
 
 
 {% if jobs.has_other_pages %}

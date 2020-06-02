@@ -4,6 +4,7 @@ from django.utils import timezone
 # Create your models here.
 class Job(models.Model):
     url = models.CharField(max_length=250, unique=True)
+    website_title = models.CharField(max_length=250)
     title = models.CharField(max_length=250)
     company = models.CharField(max_length=250)
     location = models.CharField(max_length=250)
@@ -27,8 +28,9 @@ class Website(models.Model):
         ('h2', 'h2'),
         ('h3', 'h3')
     ]
+
+    title = models.CharField(max_length=250, unique=True)
     url = models.CharField(max_length=250, unique=True)
-    title = models.CharField(max_length=250)
     query_prefix = models.CharField(max_length=250, null=True)
     position_query = models.CharField(max_length=250)
     location_query = models.CharField(max_length=250)

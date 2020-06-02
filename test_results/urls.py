@@ -5,6 +5,7 @@ from . import views
 app_name = 'jobs'
 urlpatterns = [
     path('', views.index, name="index"),
+    path('delete-all', views.delete_all, name="delete_all"),
     path('select-websites', views.select_websites, name="select_websites"),
     path('create-website', views.create_website, name="create_website"),
     path('update-website/<int:id>', views.update_website, name="update_website"),
