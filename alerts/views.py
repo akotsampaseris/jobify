@@ -17,5 +17,5 @@ def new_user(request):
 
 
 def job_notification(request):
-    email_users.job_notification_alert()
+    email_users.jobs_notification_alert()
     return redirect('alerts:email_alerts')
